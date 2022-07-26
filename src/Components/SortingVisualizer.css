@@ -1,0 +1,16 @@
+.arrayContainer{
+    display:flex;
+    justify-content: center;
+}
+.bar{
+    width:3px;
+    margin-right: 3px;
+    background-color: blueviolet;
+}
+.navbar{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding:1em 0;
+    background-color: darkblue ;
+}
