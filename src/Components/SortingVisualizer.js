@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { bubbleSort, heapSort, insertionSort, mergeSort } from "../SortingAlgorithms/SortingAlgorithms";
-import { areArraysEqual, buildMaxHeap, heapify, randomNumberInRange } from "../util";
+import { bogoSort, bubbleSort, heapSort, insertionSort, mergeSort, quickSort } from "../SortingAlgorithms/SortingAlgorithms";
+import { areArraysEqual, randomNumberInRange } from "../util";
 import './SortingVisualizer.css';
 const minValue=5;
 const maxValue=500;
 
 function SortingVisualizer(){
     const [preventClick,setPreventClick]=useState(false);
-    const [arraySize,setArraySize]=useState(50);
+    const [arraySize,setArraySize]=useState(7);
     const [barWidth,setBarWidth]=useState(30);
     const generateNewArray=()=>{
         if(!preventClick){
@@ -61,25 +61,37 @@ function SortingVisualizer(){
     const sortWithMergeSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
-            console.log(array);
-            await mergeSort(array,0,array.length-1);
-            console.log(array)
-            
+            await mergeSort(array);
             setPreventClick(false);
         }
     }
-    const testMergeSort=async ()=>{
+    const sortWithQuickSort=async ()=>{
+        if(!preventClick){
+            setPreventClick(true);
+            await quickSort(array);
+            setPreventClick(false);
+        }
+    }
+    const sortWithBogoSort=async()=>{
+        if(!preventClick){
+            setPreventClick(true);
+            console.log('hey?')
+            await bogoSort(array);
+            setPreventClick(false);
+        }
+    }
+    const testQuickSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
             for(let i=0;i<5000;i++){
                 const newArray=[];
-                const length=randomNumberInRange(1,1000)
+                const length=randomNumberInRange(1,1000);
                 for(let j=0;j<length;j++){
                     newArray.push(randomNumberInRange(-10000,10000));
                 }
                 const javascriptSorted=newArray.slice().sort((a,b)=>a-b);
-                mergeSort(newArray,0,newArray.length-1);
-                console.log(areArraysEqual(javascriptSorted,newArray));  
+                const mySorted=await quickSort(newArray);
+                console.log(areArraysEqual(javascriptSorted, mySorted));  
             }
             setPreventClick(false);
         }
@@ -88,14 +100,17 @@ function SortingVisualizer(){
         <div className="SortingVisualizer">
             <div className="navbar">
             <button onClick={generateNewArray}>Generate New Array</button>
-            <div class="slidecontainer">
+            <div className="slidecontainer">
                 <input type="range" min="5" max="300" value={arraySize} className="slider" onChange={handleSliderChange}/>
             </div>
             <button onClick={sortWithBubbleSort}>Bubble Sort</button>
             <button onClick={sortWithMergeSort}>Merge Sort</button>
             <button onClick={sortWithHeapSort}>Heap Sort</button>
             <button onClick={sortWithInsertionSort}>Insertion Sort</button>
-            <button onClick={testMergeSort}>test merge Sort</button>
+            <button onClick={sortWithQuickSort}>Quick Sort</button>
+            <button onClick={sortWithInsertionSort}>Selection Sort</button>
+            <button onClick={testQuickSort}>Test Quick Sort</button>
+            <button onClick={sortWithBogoSort}>Bogo Sort</button>
             </div>
             <div className="arrayContainer">
             {

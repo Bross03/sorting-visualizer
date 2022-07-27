@@ -1,7 +1,8 @@
 .arrayContainer{
     display:flex;
     justify-content: center;
-    max-width: 100%;
+    max-width: 90%;
+    margin:0 auto;
 }
 .bar{
     margin-right: 3px;

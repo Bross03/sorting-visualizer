@@ -5,6 +5,7 @@ export const randomNumberInRange=(min, max)=> {
 const wait=(ms)=> new Promise(resolve => setTimeout(resolve, ms))
 
 export const swap=async (arr, xp, yp)=>{
+    
     const arrayBars=document.getElementsByClassName('bar');
     const barOneStyle = arrayBars[xp].style;
     const barTwoStyle = arrayBars[yp].style;
@@ -13,7 +14,6 @@ export const swap=async (arr, xp, yp)=>{
     barTwoStyle.backgroundColor='red';
     await wait(2);
     let tempAnimation=barOneStyle.height;
-    console.log(barOneStyle.height);
     barOneStyle.height=barTwoStyle.height;
     barTwoStyle.height=tempAnimation;
     arr[xp]=arr[yp];
@@ -21,10 +21,11 @@ export const swap=async (arr, xp, yp)=>{
     await wait(2);
     barOneStyle.backgroundColor='blueviolet';
     barTwoStyle.backgroundColor='blueviolet';
-
+   
 }
 
 export const areArraysEqual=(arr1,arr2)=>{
+    try{
     if(arr1.length!=arr2.length) return false;
     for(let i=0;i<arr1.length;i++){
         if(arr1[i]!=arr2[i]){
@@ -32,6 +33,10 @@ export const areArraysEqual=(arr1,arr2)=>{
         }
     }
     return true;
+    }catch(err){
+        console.log(arr1);
+        console.log(arr2);
+    }
 }
 
 //the following are heap sort helpers
@@ -72,20 +77,7 @@ export const buildMaxHeap=async (arr)=>{
     }
 }
 
-// export const merge=(arr,left,right)=>{
-//     let tempArr=[...arr]
-//     let sortedArr=[];
-
-//     while(left.length && right.length){
-//         if(left[0]<right[0]){
-//             sortedArr.push(left.shift());
-//         }else{
-//             sortedArr.push(right.shift());
-//         }
-//     }
-
-//     return [...sortedArr,...left,...right];
-// }
+//merge sort helper
 export const merge=async (arr,left,middle,right)=>{
     let leftLength=middle-left+1;
     let rightLength=right-middle;
@@ -149,4 +141,42 @@ export const merge=async (arr,left,middle,right)=>{
         k++;
     }
 
+}
+
+//Quick Sort helper
+
+export const partition=async (arr,start,end)=>{
+    
+    const pivotValue=arr[start];
+    let swapIndex=start;
+
+    for(let i=start+1;i<=end; i++){
+        if(pivotValue>arr[i]){
+            swapIndex++;
+            if(i!==swapIndex){
+                await swap(arr,i,swapIndex);
+            }
+        }
+    }
+
+    if(swapIndex!==start){
+        await swap(arr,start,swapIndex);
+    }
+
+    return swapIndex;
+}
+
+//bogo sort helpers!!!!
+export const isSorted=(arr)=>{
+    for(let i=1;i< arr.length; i++){
+        if(arr[i]<arr[i-1]){
+            return false;
+        }
+    }
+    return true;
+}
+export const shuffle=async (arr)=>{
+    for(let i=0;i<arr.length;i++){
+        await swap(arr,i, Math.floor(Math.random()*(arr.length-1)));
+    }
 }

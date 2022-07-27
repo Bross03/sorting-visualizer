@@ -1,4 +1,4 @@
-import { buildMaxHeap, heapify, merge, swap } from "../util"
+import { buildMaxHeap, heapify, isSorted, merge, partition, shuffle, swap } from "../util"
 
 export const bubbleSort=async (arr)=>{
     for(let i=0;i<(arr.length-1);i++){
@@ -20,17 +20,7 @@ export const heapSort=async (array)=>{
     }
     return array;
 }
-// export const mergeSort=(arr)=>{
-//     if(arr.length<=1) return arr;
-
-//     let mid=Math.floor(arr.length/2);
-
-//     let left=mergeSort(arr.slice(0,mid));
-//     let right=mergeSort(arr.slice(mid));
-    
-//     return merge(left,right);
-// }
-export const mergeSort=async (arr,left,right)=>{
+export const mergeSort=async (arr,left=0, right=arr.length-1)=>{
     if(left>=right){ 
     return
     };
@@ -40,8 +30,17 @@ export const mergeSort=async (arr,left,right)=>{
     await mergeSort(arr,mid+1,right);
     await merge(arr,left,mid,right);
 }
-export const quickSort=(array)=>{
-    
+
+export const quickSort=async (arr, start=0, end=arr.length-1)=>{
+    if(start>=end){
+        return arr;
+    }
+    let pivotIndex= await partition(arr,start,end);
+
+    await quickSort(arr,start, pivotIndex-1);
+    await quickSort(arr,pivotIndex+1,end);
+
+    return arr;
 }
 export const insertionSort=async (arr)=>{
     for(let i=1;i<arr.length;i++){
@@ -54,6 +53,12 @@ export const insertionSort=async (arr)=>{
         }
 
         arr[j+1]=currValue;
+    }
+    return arr;
+}
+export const bogoSort=async (arr)=>{
+    while(isSorted(arr)==false){
+        await shuffle(arr);
     }
     return arr;
 }
