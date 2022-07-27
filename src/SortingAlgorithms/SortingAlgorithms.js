@@ -1,4 +1,4 @@
-import { buildMaxHeap, heapify, swap } from "../util"
+import { buildMaxHeap, heapify, merge, swap } from "../util"
 
 export const bubbleSort=async (arr)=>{
     for(let i=0;i<(arr.length-1);i++){
@@ -12,9 +12,7 @@ export const bubbleSort=async (arr)=>{
 }
 export const heapSort=async (array)=>{
     await buildMaxHeap(array);
-
     let lastElement=array.length-1;
-
     while(lastElement>0){
         await swap(array,0,lastElement);
         await heapify(array,0,lastElement);
@@ -22,8 +20,25 @@ export const heapSort=async (array)=>{
     }
     return array;
 }
-export const mergeSort=(array)=>{
+// export const mergeSort=(arr)=>{
+//     if(arr.length<=1) return arr;
+
+//     let mid=Math.floor(arr.length/2);
+
+//     let left=mergeSort(arr.slice(0,mid));
+//     let right=mergeSort(arr.slice(mid));
     
+//     return merge(left,right);
+// }
+export const mergeSort=async (arr,left,right)=>{
+    if(left>=right){ 
+    return
+    };
+
+    let mid =left+ parseInt((right-left)/2);
+    await mergeSort(arr,left,mid);
+    await mergeSort(arr,mid+1,right);
+    await merge(arr,left,mid,right);
 }
 export const quickSort=(array)=>{
     

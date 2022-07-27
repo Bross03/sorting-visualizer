@@ -13,6 +13,7 @@ export const swap=async (arr, xp, yp)=>{
     barTwoStyle.backgroundColor='red';
     await wait(2);
     let tempAnimation=barOneStyle.height;
+    console.log(barOneStyle.height);
     barOneStyle.height=barTwoStyle.height;
     barTwoStyle.height=tempAnimation;
     arr[xp]=arr[yp];
@@ -69,4 +70,83 @@ export const buildMaxHeap=async (arr)=>{
         await heapify(arr,i,arr.length);
         i--;
     }
+}
+
+// export const merge=(arr,left,right)=>{
+//     let tempArr=[...arr]
+//     let sortedArr=[];
+
+//     while(left.length && right.length){
+//         if(left[0]<right[0]){
+//             sortedArr.push(left.shift());
+//         }else{
+//             sortedArr.push(right.shift());
+//         }
+//     }
+
+//     return [...sortedArr,...left,...right];
+// }
+export const merge=async (arr,left,middle,right)=>{
+    let leftLength=middle-left+1;
+    let rightLength=right-middle;
+
+    let leftArr=new Array(leftLength);
+    let rightArr=new Array(rightLength);
+
+    for(let i=0;i<leftLength;i++){
+        leftArr[i]=arr[left+i];
+    }
+    for(let i=0;i<rightLength;i++){
+        rightArr[i]=arr[middle+1+i];
+    }
+
+    let i=0;
+    let j=0;
+    let k=left;
+    const arrayBars=document.getElementsByClassName('bar');
+    
+    while(i<leftLength && j<rightLength){
+        const barStyle = arrayBars[k].style;
+        if(leftArr[i]<=rightArr[j]){
+            barStyle.backgroundColor='red';
+            await wait(2);
+            barStyle.height=`${leftArr[i]}px`;
+            arr[k]=leftArr[i];
+            await wait(2);
+            barStyle.backgroundColor='blueviolet';
+            i++;
+        }else{
+            barStyle.backgroundColor='red';
+            await wait(2);
+            barStyle.height=`${rightArr[j]}px`;
+            arr[k]=rightArr[j];
+            await wait(2);
+            barStyle.backgroundColor='blueviolet';
+            j++;
+        }
+        k++;
+    }
+    while(i<leftLength){
+        const barStyle = arrayBars[k].style;
+        barStyle.backgroundColor='red';
+        await wait(2);
+        barStyle.height=`${leftArr[i]}px`;
+        arr[k]=leftArr[i];
+        await wait(2);
+        barStyle.backgroundColor='blueviolet';
+        i++;
+        k++;
+    }
+    while(i<rightLength){
+        const barStyle = arrayBars[k].style;
+        barStyle.backgroundColor='red';
+        await wait(2);
+        barStyle.height=`${rightArr[i]}px`;
+        arr[k]=rightArr[j];
+        await wait(2);
+        barStyle.backgroundColor='blueviolet';
+        j++;
+        k++;
+    }
+
 }

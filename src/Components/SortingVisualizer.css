@@ -1,9 +1,9 @@
 .arrayContainer{
     display:flex;
     justify-content: center;
+    max-width: 100%;
 }
 .bar{
-    width:3px;
     margin-right: 3px;
     background-color: blueviolet;
 }
