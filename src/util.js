@@ -9,6 +9,8 @@ export const swap=async (arr, xp, yp, speed)=>{
     const arrayBars=document.getElementsByClassName('bar');
     const barOneStyle = arrayBars[xp].style;
     const barTwoStyle = arrayBars[yp].style;
+    const barOneValue=arrayBars[xp].firstChild;
+    const barTwoValue=arrayBars[yp].firstChild;
     let temp=arr[xp];
     barOneStyle.backgroundColor='red';
     barTwoStyle.backgroundColor='red';
@@ -17,7 +19,13 @@ export const swap=async (arr, xp, yp, speed)=>{
     }
     let tempAnimation=barOneStyle.height;
     barOneStyle.height=barTwoStyle.height;
-    barTwoStyle.height=tempAnimation;
+    if(barOneValue){
+    barOneValue.innerHTML=barOneStyle.height.slice(0, -2);
+    }
+        barTwoStyle.height=tempAnimation;
+    if(barOneValue){
+        barTwoValue.innerHTML=barTwoStyle.height.slice(0, -2);
+    }
     arr[xp]=arr[yp];
     arr[yp]=temp;
     if(speed>0){
@@ -102,12 +110,16 @@ export const merge=async (arr,left,middle,right,speed)=>{
     
     while(i<leftLength && j<rightLength){
         const barStyle = arrayBars[k].style;
+        const barValue=arrayBars[k].firstChild;
         if(leftArr[i]<=rightArr[j]){
             barStyle.backgroundColor='red';
             if(speed>0){
                 await wait(speed);
             }
             barStyle.height=`${leftArr[i]}px`;
+            if(barValue){
+                barValue.innerHTML=leftArr[i];
+            }
             arr[k]=leftArr[i];
             if(speed>0){
                 await wait(speed);
@@ -120,6 +132,9 @@ export const merge=async (arr,left,middle,right,speed)=>{
                 await wait(speed);
             }
             barStyle.height=`${rightArr[j]}px`;
+            if(barValue){
+                barValue.innerHTML=rightArr[j];
+            }
             arr[k]=rightArr[j];
             if(speed>0){
                 await wait(speed);
@@ -131,11 +146,15 @@ export const merge=async (arr,left,middle,right,speed)=>{
     }
     while(i<leftLength){
         const barStyle = arrayBars[k].style;
+        const barValue=arrayBars[k].firstChild;
         barStyle.backgroundColor='red';
         if(speed>0){
             await wait(speed);
         }
         barStyle.height=`${leftArr[i]}px`;
+        if(barValue){
+            barValue.innerHTML=leftArr[i];
+        }
         arr[k]=leftArr[i];
         if(speed>0){
             await wait(speed);
@@ -146,11 +165,15 @@ export const merge=async (arr,left,middle,right,speed)=>{
     }
     while(i<rightLength){
         const barStyle = arrayBars[k].style;
+        const barValue=arrayBars[k].firstChild;
         barStyle.backgroundColor='red';
         if(speed>0){
             await wait(speed);
         }
         barStyle.height=`${rightArr[i]}px`;
+        if(barValue){
+            barValue.innerHTML=rightArr[i];
+        }
         arr[k]=rightArr[j];
         if(speed>0){
             await wait(speed);

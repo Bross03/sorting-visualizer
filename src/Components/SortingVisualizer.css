@@ -11,6 +11,7 @@
 .bar{
     margin-right: 3px;
     background-color: blueviolet;
+    overflow: hidden;
 }
 .navbar{
     display: flex;
@@ -70,4 +71,14 @@ header p:hover{
 }
 .sliderAndValue p:hover{
     color:white;
+}
+.bar{
+    display:flex;
+    justify-content: center;
+    color:white;
+}
+.time{
+    position: absolute;
+    bottom:1em;
+    left:1em;
 }

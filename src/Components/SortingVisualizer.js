@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { bogoSort, bubbleSort, heapSort, insertionSort, mergeSort, quickSort } from "../SortingAlgorithms/SortingAlgorithms";
-import { areArraysEqual, randomNumberInRange } from "../util";
+import { randomNumberInRange } from "../util";
 import './SortingVisualizer.css';
 const minValue=5;
 const maxValue=400;
@@ -10,6 +10,8 @@ function SortingVisualizer(){
     const [arraySize,setArraySize]=useState(8);
     const [arraySpeed,setArraySpeed]=useState(2);
     const [barWidth,setBarWidth]=useState(30);
+    const [timeElapsed,setTimeElapsed]=useState();
+
     const generateNewArray=()=>{
         if(!preventClick){
             const newArray=[];
@@ -40,10 +42,11 @@ function SortingVisualizer(){
     const sortWithBubbleSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
+            setTimeElapsed('...');
             const firstDate=Date.now();
             const mySorted=await bubbleSort(array,arraySpeed);
             const secondDate=Date.now();
-            console.log(secondDate-firstDate);
+            setTimeElapsed(secondDate-firstDate);
             setArray(mySorted);
             setPreventClick(false);
         }
@@ -51,10 +54,11 @@ function SortingVisualizer(){
     const sortWithInsertionSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
+            setTimeElapsed('...');
             const firstDate=Date.now();
             const mySorted=await insertionSort(array,arraySpeed);
             const secondDate=Date.now();
-            console.log(secondDate-firstDate);
+            setTimeElapsed(secondDate-firstDate);
             setArray(mySorted);
             setPreventClick(false);
         }
@@ -62,10 +66,11 @@ function SortingVisualizer(){
     const sortWithHeapSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
+            setTimeElapsed('...');
             const firstDate=Date.now();
             const mySorted=await heapSort(array,arraySpeed);
             const secondDate=Date.now();
-            console.log(secondDate-firstDate);
+            setTimeElapsed(secondDate-firstDate);
             setArray(mySorted);
             setPreventClick(false);
         }
@@ -73,30 +78,33 @@ function SortingVisualizer(){
     const sortWithMergeSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
+            setTimeElapsed('...');
             const firstDate=Date.now();
             await mergeSort(array,0,array.length-1, arraySpeed);
             const secondDate=Date.now();
-            console.log(secondDate-firstDate);
+            setTimeElapsed(secondDate-firstDate);
             setPreventClick(false);
         }
     }
     const sortWithQuickSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
+            setTimeElapsed('...');
             const firstDate=Date.now();
             await quickSort(array,0,array.length-1,arraySpeed);
             const secondDate=Date.now();
-            console.log(secondDate-firstDate);
+            setTimeElapsed(secondDate-firstDate);
             setPreventClick(false);
         }
     }
     const sortWithBogoSort=async()=>{
         if(!preventClick){
             setPreventClick(true);
+            setTimeElapsed('...');
             const firstDate=Date.now();
             await bogoSort(array,arraySpeed);
             const secondDate=Date.now();
-            console.log(secondDate-firstDate);
+            setTimeElapsed(secondDate-firstDate);
             setPreventClick(false);
         }
     }
@@ -110,22 +118,6 @@ function SortingVisualizer(){
         }
 
     }
-    const testQuickSort=async ()=>{
-        if(!preventClick){
-            setPreventClick(true);
-            for(let i=0;i<5000;i++){
-                const newArray=[];
-                const length=randomNumberInRange(1,1000);
-                for(let j=0;j<length;j++){
-                    newArray.push(randomNumberInRange(-10000,10000));
-                }
-                const javascriptSorted=newArray.slice().sort((a,b)=>a-b);
-                const mySorted=await quickSort(newArray);
-                console.log(areArraysEqual(javascriptSorted, mySorted));  
-            }
-            setPreventClick(false);
-        }
-    }
     return (
         <div className="sortingVisualizer">
             <header>
@@ -135,14 +127,14 @@ function SortingVisualizer(){
                 <div className="separation"></div>
                 <div className="slidecontainer">
                     <div className="sliderWrapper">
-                        <label for="sizeSlider">Size of Array</label>
+                        <label htmlFor="sizeSlider">Size of Array</label>
                         <div className="sliderAndValue">
                             <input type="range" id="sizeSlider" min="5" max="300" value={arraySize} className="slider" onChange={handleSizeSliderChange}/>
                             <p className="rangeValueSize">{arraySize}</p>
                         </div>
                     </div>
                     <div className="sliderWrapper">
-                        <label for="sizeSlider">Comparison Speed</label>
+                        <label htmlFor="sizeSlider">Comparison Speed</label>
                         <div className="sliderAndValue">
                             <input type="range" id="speedSlider" min="0" max="500" value={arraySpeed} className="slider" onChange={handleSpeedSliderChange}/>
                             <p className="rangeValueSpeed">{arraySpeed}ms</p>
@@ -168,9 +160,15 @@ function SortingVisualizer(){
                     height: `${value}px`,
                     width: `${barWidth}px`
                     }}
-                key={idx}></div>
+                key={idx}>{
+                    array.length<20?
+                    <div>{value}</div>
+                    :
+                    null
+                }</div>
             })
             }
+            <h3 className="time">Time elapsed: {timeElapsed} ms</h3>
             </div>
         </div>
     )
