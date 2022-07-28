@@ -1,8 +1,12 @@
+.sortingVisualizer{
+    height:100vh;
+    max-height: 100vh;
+}
 .arrayContainer{
     display:flex;
     justify-content: center;
     max-width: 90%;
-    margin:0 auto;
+    margin:0 auto 0.1em;
 }
 .bar{
     margin-right: 3px;
@@ -10,8 +14,60 @@
 }
 .navbar{
     display: flex;
+    width:100%;
     justify-content: space-around;
     align-items: center;
     padding:1em 0;
-    background-color: darkblue ;
+    
+}
+.bogoSort{
+    display:none;
+}
+header{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #33363D;
+}
+header h2{
+    margin: 0.75em auto 0;
+    color:white;
+}
+.algorithms{
+    display:flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+header p{
+    color:white;  
+    cursor: pointer;  
+    margin:0.2em 1em;
+}
+header p:hover{
+    color:fuchsia;
+}
+.slideContainer{
+    display:flex;
+    flex-direction: column;
+}
+.sliderWrapper{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.sliderWrapper label{
+    display:block;
+    margin-right:0.25em;
+    color:white;
+}
+.sliderAndValue{
+    display:flex;
+    align-items: center;
+}
+.sliderAndValue p{
+    margin:0 0 0 0.2em;
+}
+.sliderAndValue p:hover{
+    color:white;
 }

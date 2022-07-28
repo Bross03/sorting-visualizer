@@ -3,11 +3,12 @@ import { bogoSort, bubbleSort, heapSort, insertionSort, mergeSort, quickSort } f
 import { areArraysEqual, randomNumberInRange } from "../util";
 import './SortingVisualizer.css';
 const minValue=5;
-const maxValue=500;
+const maxValue=400;
 
 function SortingVisualizer(){
     const [preventClick,setPreventClick]=useState(false);
-    const [arraySize,setArraySize]=useState(7);
+    const [arraySize,setArraySize]=useState(8);
+    const [arraySpeed,setArraySpeed]=useState(2);
     const [barWidth,setBarWidth]=useState(30);
     const generateNewArray=()=>{
         if(!preventClick){
@@ -28,16 +29,21 @@ function SortingVisualizer(){
         setBarWidth(Math.floor(container.offsetWidth / (arraySize * 2)))
     },[arraySize]);
 
-    const handleSliderChange=(event)=>{
+    const handleSizeSliderChange=(event)=>{
         setArraySize(event.target.value);
     }
-
+    const handleSpeedSliderChange=(event)=>{
+        setArraySpeed(parseInt(event.target.value));
+    }
     const [array,setArray]=useState(generateNewArray);
     
     const sortWithBubbleSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
-            const mySorted=await bubbleSort(array);
+            const firstDate=Date.now();
+            const mySorted=await bubbleSort(array,arraySpeed);
+            const secondDate=Date.now();
+            console.log(secondDate-firstDate);
             setArray(mySorted);
             setPreventClick(false);
         }
@@ -45,7 +51,10 @@ function SortingVisualizer(){
     const sortWithInsertionSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
-            const mySorted=await insertionSort(array);
+            const firstDate=Date.now();
+            const mySorted=await insertionSort(array,arraySpeed);
+            const secondDate=Date.now();
+            console.log(secondDate-firstDate);
             setArray(mySorted);
             setPreventClick(false);
         }
@@ -53,7 +62,10 @@ function SortingVisualizer(){
     const sortWithHeapSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
-            const mySorted=await heapSort(array);
+            const firstDate=Date.now();
+            const mySorted=await heapSort(array,arraySpeed);
+            const secondDate=Date.now();
+            console.log(secondDate-firstDate);
             setArray(mySorted);
             setPreventClick(false);
         }
@@ -61,24 +73,42 @@ function SortingVisualizer(){
     const sortWithMergeSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
-            await mergeSort(array);
+            const firstDate=Date.now();
+            await mergeSort(array,0,array.length-1, arraySpeed);
+            const secondDate=Date.now();
+            console.log(secondDate-firstDate);
             setPreventClick(false);
         }
     }
     const sortWithQuickSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
-            await quickSort(array);
+            const firstDate=Date.now();
+            await quickSort(array,0,array.length-1,arraySpeed);
+            const secondDate=Date.now();
+            console.log(secondDate-firstDate);
             setPreventClick(false);
         }
     }
     const sortWithBogoSort=async()=>{
         if(!preventClick){
             setPreventClick(true);
-            console.log('hey?')
-            await bogoSort(array);
+            const firstDate=Date.now();
+            await bogoSort(array,arraySpeed);
+            const secondDate=Date.now();
+            console.log(secondDate-firstDate);
             setPreventClick(false);
         }
+    }
+    const revealSecret=()=>{
+        const bogo=document.querySelector('.bogoSort');
+        console.log(bogo.style.display);
+        if(!bogo.style.display || bogo.style.display=='none'){
+            bogo.style.display='block';
+        }else{
+            bogo.style.display='none';
+        }
+
     }
     const testQuickSort=async ()=>{
         if(!preventClick){
@@ -97,21 +127,39 @@ function SortingVisualizer(){
         }
     }
     return (
-        <div className="SortingVisualizer">
+        <div className="sortingVisualizer">
+            <header>
+                <h2>Sortin<span onClick={revealSecret}>g</span> Visualizer</h2>
             <div className="navbar">
-            <button onClick={generateNewArray}>Generate New Array</button>
-            <div className="slidecontainer">
-                <input type="range" min="5" max="300" value={arraySize} className="slider" onChange={handleSliderChange}/>
+                <p onClick={generateNewArray}>Generate New Array</p>
+                <div className="separation"></div>
+                <div className="slidecontainer">
+                    <div className="sliderWrapper">
+                        <label for="sizeSlider">Size of Array</label>
+                        <div className="sliderAndValue">
+                            <input type="range" id="sizeSlider" min="5" max="300" value={arraySize} className="slider" onChange={handleSizeSliderChange}/>
+                            <p className="rangeValueSize">{arraySize}</p>
+                        </div>
+                    </div>
+                    <div className="sliderWrapper">
+                        <label for="sizeSlider">Comparison Speed</label>
+                        <div className="sliderAndValue">
+                            <input type="range" id="speedSlider" min="0" max="500" value={arraySpeed} className="slider" onChange={handleSpeedSliderChange}/>
+                            <p className="rangeValueSpeed">{arraySpeed}ms</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="separation"></div>
+                <div className="algorithms">
+                    <p className="bubbleSort" onClick={sortWithBubbleSort}>Bubble Sort</p>
+                    <p className="mergeSort" onClick={sortWithMergeSort}>Merge Sort</p>
+                    <p className="heapSort" onClick={sortWithHeapSort}>Heap Sort</p>
+                    <p className="insertionSort" onClick={sortWithInsertionSort}>Insertion Sort</p>
+                    <p className="quickSort" onClick={sortWithQuickSort}>Quick Sort</p>
+                    <p className="bogoSort" onClick={sortWithBogoSort}>Bogo Sort</p>
+                </div>
             </div>
-            <button onClick={sortWithBubbleSort}>Bubble Sort</button>
-            <button onClick={sortWithMergeSort}>Merge Sort</button>
-            <button onClick={sortWithHeapSort}>Heap Sort</button>
-            <button onClick={sortWithInsertionSort}>Insertion Sort</button>
-            <button onClick={sortWithQuickSort}>Quick Sort</button>
-            <button onClick={sortWithInsertionSort}>Selection Sort</button>
-            <button onClick={testQuickSort}>Test Quick Sort</button>
-            <button onClick={sortWithBogoSort}>Bogo Sort</button>
-            </div>
+            </header>
             <div className="arrayContainer">
             {
             array.map((value, idx)=>{

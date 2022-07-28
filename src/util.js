@@ -1,27 +1,30 @@
+
 export const randomNumberInRange=(min, max)=> {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const wait=(ms)=> new Promise(resolve => setTimeout(resolve, ms))
 
-export const swap=async (arr, xp, yp)=>{
-    
+export const swap=async (arr, xp, yp, speed)=>{
     const arrayBars=document.getElementsByClassName('bar');
     const barOneStyle = arrayBars[xp].style;
     const barTwoStyle = arrayBars[yp].style;
     let temp=arr[xp];
     barOneStyle.backgroundColor='red';
     barTwoStyle.backgroundColor='red';
-    await wait(2);
+    if(speed>0){
+    await wait(speed);
+    }
     let tempAnimation=barOneStyle.height;
     barOneStyle.height=barTwoStyle.height;
     barTwoStyle.height=tempAnimation;
     arr[xp]=arr[yp];
     arr[yp]=temp;
-    await wait(2);
+    if(speed>0){
+        await wait(speed);
+    }
     barOneStyle.backgroundColor='blueviolet';
     barTwoStyle.backgroundColor='blueviolet';
-   
 }
 
 export const areArraysEqual=(arr1,arr2)=>{
@@ -41,7 +44,7 @@ export const areArraysEqual=(arr1,arr2)=>{
 
 //the following are heap sort helpers
 
-export const heapify=async (heap,i,max)=>{
+export const heapify=async (heap,i,max,speed)=>{
     let index;
     let leftChildIndex;
     let rightChildIndex;
@@ -63,22 +66,22 @@ export const heapify=async (heap,i,max)=>{
         if(index===i){
             return;
         }
-        await swap(heap,i,index);
+        await swap(heap,i,index,speed);
         
         i=index;
     }
 }
-export const buildMaxHeap=async (arr)=>{
+export const buildMaxHeap=async (arr,speed)=>{
     
     let i=Math.floor(arr.length/2 -1);
     while(i>=0){
-        await heapify(arr,i,arr.length);
+        await heapify(arr,i,arr.length,speed);
         i--;
     }
 }
 
 //merge sort helper
-export const merge=async (arr,left,middle,right)=>{
+export const merge=async (arr,left,middle,right,speed)=>{
     let leftLength=middle-left+1;
     let rightLength=right-middle;
 
@@ -101,18 +104,26 @@ export const merge=async (arr,left,middle,right)=>{
         const barStyle = arrayBars[k].style;
         if(leftArr[i]<=rightArr[j]){
             barStyle.backgroundColor='red';
-            await wait(2);
+            if(speed>0){
+                await wait(speed);
+            }
             barStyle.height=`${leftArr[i]}px`;
             arr[k]=leftArr[i];
-            await wait(2);
+            if(speed>0){
+                await wait(speed);
+            }
             barStyle.backgroundColor='blueviolet';
             i++;
         }else{
             barStyle.backgroundColor='red';
-            await wait(2);
+            if(speed>0){
+                await wait(speed);
+            }
             barStyle.height=`${rightArr[j]}px`;
             arr[k]=rightArr[j];
-            await wait(2);
+            if(speed>0){
+                await wait(speed);
+            }
             barStyle.backgroundColor='blueviolet';
             j++;
         }
@@ -121,10 +132,14 @@ export const merge=async (arr,left,middle,right)=>{
     while(i<leftLength){
         const barStyle = arrayBars[k].style;
         barStyle.backgroundColor='red';
-        await wait(2);
+        if(speed>0){
+            await wait(speed);
+        }
         barStyle.height=`${leftArr[i]}px`;
         arr[k]=leftArr[i];
-        await wait(2);
+        if(speed>0){
+            await wait(speed);
+        }
         barStyle.backgroundColor='blueviolet';
         i++;
         k++;
@@ -132,10 +147,14 @@ export const merge=async (arr,left,middle,right)=>{
     while(i<rightLength){
         const barStyle = arrayBars[k].style;
         barStyle.backgroundColor='red';
-        await wait(2);
+        if(speed>0){
+            await wait(speed);
+        }
         barStyle.height=`${rightArr[i]}px`;
         arr[k]=rightArr[j];
-        await wait(2);
+        if(speed>0){
+            await wait(speed);
+        }
         barStyle.backgroundColor='blueviolet';
         j++;
         k++;
@@ -145,7 +164,7 @@ export const merge=async (arr,left,middle,right)=>{
 
 //Quick Sort helper
 
-export const partition=async (arr,start,end)=>{
+export const partition=async (arr,start,end,speed)=>{
     
     const pivotValue=arr[start];
     let swapIndex=start;
@@ -154,13 +173,13 @@ export const partition=async (arr,start,end)=>{
         if(pivotValue>arr[i]){
             swapIndex++;
             if(i!==swapIndex){
-                await swap(arr,i,swapIndex);
+                await swap(arr,i,swapIndex,speed);
             }
         }
     }
 
     if(swapIndex!==start){
-        await swap(arr,start,swapIndex);
+        await swap(arr,start,swapIndex,speed);
     }
 
     return swapIndex;
@@ -175,8 +194,8 @@ export const isSorted=(arr)=>{
     }
     return true;
 }
-export const shuffle=async (arr)=>{
+export const shuffle=async (arr, speed)=>{
     for(let i=0;i<arr.length;i++){
-        await swap(arr,i, Math.floor(Math.random()*(arr.length-1)));
+        await swap(arr,i, Math.floor(Math.random()*(arr.length-1)),speed);
     }
 }
