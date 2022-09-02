@@ -2,16 +2,22 @@ import React, { useEffect, useState } from "react";
 import { bogoSort, bubbleSort, heapSort, insertionSort, mergeSort, quickSort } from "../SortingAlgorithms/SortingAlgorithms";
 import { randomNumberInRange } from "../util";
 import './SortingVisualizer.css';
+
+//declaring values for array size
 const minValue=5;
 const maxValue=400;
 
 function SortingVisualizer(){
+
+    //declaring state variables
     const [preventClick,setPreventClick]=useState(false);
     const [arraySize,setArraySize]=useState(8);
     const [arraySpeed,setArraySpeed]=useState(2);
     const [barWidth,setBarWidth]=useState(30);
     const [timeElapsed,setTimeElapsed]=useState();
 
+
+    //generates new array with specific size
     const generateNewArray=()=>{
         if(!preventClick){
             const newArray=[];
@@ -25,20 +31,32 @@ function SortingVisualizer(){
             }
         }
     }
+
+    //on change to array size, adjust bar width accordingly
     useEffect(()=>{
         const container=document.querySelector('.arrayContainer');
         generateNewArray();
         setBarWidth(Math.floor(container.offsetWidth / (arraySize * 2)))
     },[arraySize]);
 
+
+    //change size of the array
     const handleSizeSliderChange=(event)=>{
         setArraySize(event.target.value);
     }
+
+    //change speed of animation
     const handleSpeedSliderChange=(event)=>{
         setArraySpeed(parseInt(event.target.value));
     }
     const [array,setArray]=useState(generateNewArray);
     
+
+    /*
+    / The following methods call the respective algorithm to sort the array.
+    / Also, they keep track of the time elapsed using the date method and 
+    / prevent other buttons to be pressed when an algorithm is runningt
+    */
     const sortWithBubbleSort=async ()=>{
         if(!preventClick){
             setPreventClick(true);
@@ -108,6 +126,14 @@ function SortingVisualizer(){
             setPreventClick(false);
         }
     }
+
+    /*
+    / Easter egg! By pressing "g" on the title, you reveal the button to sort with
+    / bogo sort, the worst sorting algorithm ever! It just randomizes the input array
+    / and checks if it sorted, if not it runs again. The average time complexity for bogo
+    / sort is O((n+1)!). But its best case scenario is O(1) which is faster than all
+    / other algorithms in this program but I wouldn't count on it.
+    */ 
     const revealSecret=()=>{
         const bogo=document.querySelector('.bogoSort');
         console.log(bogo.style.display);
@@ -118,12 +144,17 @@ function SortingVisualizer(){
         }
 
     }
+
+    
     return (
         <div className="sortingVisualizer">
             <header>
                 <h2>Sortin<span onClick={revealSecret}>g</span> Visualizer</h2>
             <div className="navbar">
+                <div className="newArray">
                 <p onClick={generateNewArray}>Generate New Array</p>
+                <p onClick={()=>window.location.reload()}>Refresh</p>
+                </div>
                 <div className="separation"></div>
                 <div className="slidecontainer">
                     <div className="sliderWrapper">

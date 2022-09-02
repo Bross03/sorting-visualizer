@@ -1,10 +1,14 @@
 
+//helper to generate a random number
 export const randomNumberInRange=(min, max)=> {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//method to wait for the speed of the animation
 const wait=(ms)=> new Promise(resolve => setTimeout(resolve, ms))
 
+
+//swap two elements method(it also animates the array)
 export const swap=async (arr, xp, yp, speed)=>{
     const arrayBars=document.getElementsByClassName('bar');
     const barOneStyle = arrayBars[xp].style;
@@ -35,23 +39,12 @@ export const swap=async (arr, xp, yp, speed)=>{
     barTwoStyle.backgroundColor='blueviolet';
 }
 
-export const areArraysEqual=(arr1,arr2)=>{
-    try{
-    if(arr1.length!=arr2.length) return false;
-    for(let i=0;i<arr1.length;i++){
-        if(arr1[i]!=arr2[i]){
-            return false;
-        }
-    }
-    return true;
-    }catch(err){
-        console.log(arr1);
-        console.log(arr2);
-    }
-}
-
 //the following are heap sort helpers
 
+/*
+/ Heapifies the array, it rearranges the array
+/ to maintain the max heap property
+*/
 export const heapify=async (heap,i,max,speed)=>{
     let index;
     let leftChildIndex;
@@ -79,6 +72,8 @@ export const heapify=async (heap,i,max,speed)=>{
         i=index;
     }
 }
+
+//creates the first max heap from an input array
 export const buildMaxHeap=async (arr,speed)=>{
     
     let i=Math.floor(arr.length/2 -1);
@@ -88,7 +83,7 @@ export const buildMaxHeap=async (arr,speed)=>{
     }
 }
 
-//merge sort helper
+//merges two sorted arrays
 export const merge=async (arr,left,middle,right,speed)=>{
     let leftLength=middle-left+1;
     let rightLength=right-middle;
@@ -185,7 +180,12 @@ export const merge=async (arr,left,middle,right,speed)=>{
 
 }
 
-//Quick Sort helper
+/*
+/ Uses the element in the beginning of the array as
+/ a pivot where all other elements are divided into
+/ smaller(left) or larger(right) than the pivot
+*/
+
 
 export const partition=async (arr,start,end,speed)=>{
     
@@ -208,7 +208,7 @@ export const partition=async (arr,start,end,speed)=>{
     return swapIndex;
 }
 
-//bogo sort helpers!!!!
+//checks if array is sorted
 export const isSorted=(arr)=>{
     for(let i=1;i< arr.length; i++){
         if(arr[i]<arr[i-1]){
@@ -217,6 +217,7 @@ export const isSorted=(arr)=>{
     }
     return true;
 }
+//shuffles the array
 export const shuffle=async (arr, speed)=>{
     for(let i=0;i<arr.length;i++){
         await swap(arr,i, Math.floor(Math.random()*(arr.length-1)),speed);
